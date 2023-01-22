@@ -1,16 +1,13 @@
-import React from "react";
-import { useAuth } from "./context/auth";
-import { useProjects } from "./context/projects";
-import { useTasks } from "./context/tasks";
-import { useTeamMembers } from "./context/team-members";
-import { useFilter } from "./context/filter";
-import { useNotifications } from "./context/notifications";
-import { useReports } from "./context/reports";
-import { useSocket } from "./context/socket";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "./context/auth/useAuth";
+import { useProjects } from "./context/projects/useProjects";
+import { useTasks } from "./context/tasks/useTasks";
+import { useTeamMembers } from "./context/team-members/useTeamMembers";
+import { useFilter } from "./context/filter/useFilter";
+import { useNotifications } from "./context/notifications/useNotifications";
+import { useReports } from "./context/reports/useReports";
+import { useSocket } from "./context/socket/useSocket";
 import { useHistory } from "react-router-dom";
-import { useEffect } from "react";
-import { useState } from "react";
-
 import Navbar from "./components/Navbar";
 import ProjectsList from "./components/ProjectsList";
 import TasksList from "./components/TasksList";
@@ -39,12 +36,15 @@ function App() {
   useEffect(() => {
     if (isAuthenticated) {
       // Fetch projects, tasks, and team members from the server
+      // using the API endpoints
+      // ...
     }
   }, [isAuthenticated]);
 
   useEffect(() => {
     socket.on("new-notification", (notification) => {
       // Add the new notification to the notifications array
+      // ...
     });
   }, [socket, notifications]);
 
@@ -69,8 +69,7 @@ function App() {
                 setSelectedTask={setSelectedTask}
                 createTask={createTask}
                 updateTask={updateTask}
-                delete
-                Task={deleteTask}
+                deleteTask={deleteTask}
                 search={search}
                 filter={filter}
                 selectedProject={selectedProject}
@@ -107,6 +106,10 @@ function App() {
             reports={reports}
             generateReport={generateReport}
             selectedProject={selectedProject}
+          />
+          <Notifications
+            notifications={notifications}
+            markNotificationAsRead={markNotificationAsRead}
           />
         </>
       )}
