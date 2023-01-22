@@ -1,39 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { useAuth } from './context/auth';
+import { useProjects } from './context/projects';
+import { useTasks } from './context/tasks';
+import { useTeamMembers } from './context/team-members';
+import { useFilter } from './context/filter';
+import { useNotifications } from './context/notifications';
+import { useReports } from './context/reports';
+import { useSocket } from './context/socket';
+import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
-function TaskList() {
-  const [tasks, setTasks] = useState([]);
+function App() {
+  const { isAuthenticated, user } = useAuth();
+  const { projects, createProject, updateProject, deleteProject } = useProjects();
+  const { tasks, createTask, updateTask, deleteTask } = useTasks();
+  const { teamMembers, addTeamMember, removeTeamMember } = useTeamMembers();
+  const { search, filter } = useFilter();
+  const { notifications, markNotificationAsRead } = useNotifications();
+  const { reports, generateReport } = useReports();
+  const socket = useSocket();
+  const history = useHistory();
+  const [selectedProject, setSelectedProject] = useState();
+  const [selectedTask, setSelectedTask] = useState();
+  const [selectedTeamMember, setSelectedTeamMember] = useState();
 
   useEffect(() => {
-    axios
-      .get('/api/tasks')
-      .then(response => setTasks(response.data))
-      .catch(error => console.log(error));
-  }, []);
+    if (isAuthenticated) {
+      // Fetch projects, tasks, and team members from the server
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    socket.on('new-notification', notification => {
+      // Add the new notification to the notifications array
+    });
+  }, [socket, notifications]);
 
   return (
     <div>
-      <h2>Task List</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Task</th>
-            <th>Project</th>
-            <th>Assigned To</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tasks.map(task => (
-            <tr key={task.id}>
-              <td>{task.name}</td>
-              <td>{task.project}</td>
-              <td>{task.member}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Render the navigation bar */}
+      {isAuthenticated && (
+        <>
+          {/* Render the projects list */}
+          {selectedProject && (
+            <>
+              {/* Render the tasks list */}
+              {selectedTask && (
+                <>
+                  {/* Render the task details */}
+                  {/* Render the comments section */}
+                  {/* Render the file upload/download section */}
+                </>
+              )}
+              {/* Render the team members list */}
+              {selectedTeamMember && (
+                <>
+                  {/* Render the team member details */}
+                </>
+              )}
+            </>
+          )}
+          {/* Render the reports section */}
+        </>
+      )}
     </div>
   );
 }
 
-export default TaskList;
+export default App;
