@@ -10,7 +10,7 @@ import { useSocket } from "./context/socket/useSocket";
 import { useHistory } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProjectsList from "./components/ProjectsList";
-import TasksList from "./components/TasksList";
+import { TasksList } from "./components/TasksList";
 import TaskDetails from "./components/TaskDetails";
 import Comments from "./components/Comments";
 import FileUpload from "./components/FileUpload";
